@@ -1,0 +1,6 @@
+data/dataset_animales.csv
+models/arbol_animales.joblib
+venv/
+__pycache__/
+*.pyc
+.env

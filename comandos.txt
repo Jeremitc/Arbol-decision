@@ -1,0 +1,32 @@
+=== PASO 0: ACTIVAR EL ENTORNO VIRTUAL ===
+(Debes ejecutar esto cada vez que abras una nueva terminal para que Python reconozca las librerías)
+
+.\venv\Scripts\Activate.ps1
+
+-----------------------------------------------------------
+=== PASO 1: GENERAR LOS DATOS ===
+(Crea el archivo dataset_animales.csv con los 2700 ejemplos)
+
+python src\generate_data.py
+
+*Nota: Si ya existe, el script lo saltará. Si quieres regenerarlo a la fuerza, borra el archivo data\dataset_animales.csv primero.
+
+-----------------------------------------------------------
+=== PASO 2: ENTRENAR EL MODELO ===
+(Lee el CSV y crea el archivo arbol_animales.joblib)
+
+python src\train.py
+
+*Nota: Si ya existe, el script lo saltará. Si quieres re-entrenarlo a la fuerza, borra el archivo models\arbol_animales.joblib primero.
+
+-----------------------------------------------------------
+=== PASO 3: INICIAR EL JUEGO ===
+(Inicia la consola interactiva tipo Akinator)
+
+python src\juego.py
+
+-----------------------------------------------------------
+=== (OPCIONAL) EJECUCIÓN AUTOMÁTICA EN UN CLIC ===
+Si no quieres escribir comandos a mano, en Windows puedes simplemente ejecutar el archivo:
+
+.\run.bat
