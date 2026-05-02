@@ -2,71 +2,132 @@ import joblib
 import pandas as pd
 import os
 import time
+import random
 
 def limpiar_consola():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def hacer_pregunta_bool(pregunta):
     while True:
-        respuesta = input(f"{pregunta} (s/n): ").strip().lower()
+        respuesta = input(f"🤔 {pregunta} (s/n): ").strip().lower()
         if respuesta in ['s', 'si', 'sí', 'y', 'yes']:
             return 1
         elif respuesta in ['n', 'no']:
             return 0
         else:
-            print("Por favor responde con 's' o 'n'.")
+            print("  😅 Ups, no te entendí. Solo dime 's' para sí, o 'n' para no.")
+
+def mensaje_espera():
+    frases = [
+        "Mmm... qué interesante...",
+        "Esto me da una pista gigante...",
+        "Anotado. Déjame pensar un segundo...",
+        "Vaya, no me esperaba eso...",
+        "Creo que ya sé por dónde va la cosa..."
+    ]
+    print(f"\n✨ {random.choice(frases)}")
+    time.sleep(1)
 
 def main():
     limpiar_consola()
-    print("=======================================")
-    print("  EL ÁRBOL ADIVINADOR DE ANIMALES  ")
-    print("=======================================")
-    print("¡Responderé tus preguntas e intentaré adivinarlo!")
-    print("=======================================\n")
+    print("==================================================")
+    print(" 🌟 EL GRAN SABIO DE LOS ANIMALES 🌟 ")
+    print("==================================================")
+    print("¡Hola! Soy tu asistente mágico. Piensa en un animal,")
+    print("concéntrate muy bien, y yo leeré tu mente.")
+    print("==================================================\n")
     
     ruta_modelo = 'models/arbol_animales.joblib'
     if not os.path.exists(ruta_modelo):
-        print(f"Error: No se encontró el modelo en {ruta_modelo}.")
-        print("Asegúrate de ejecutar train.py primero.")
+        print(f"Error: No encontré mis pergaminos mágicos en {ruta_modelo}.")
         return
         
     modelo = joblib.load(ruta_modelo)
     
-    print("Responde las siguientes preguntas sobre tu animal (Solo S/N):\n")
-    es_muy_pesado = hacer_pregunta_bool("1. ¿Es un animal muy pesado (más de 100 KG en su edad adulta)?")
-    es_muy_grande = hacer_pregunta_bool("2. ¿Es un animal muy grande o largo (mide más de 1 metro)?")
-    tiene_4_patas = hacer_pregunta_bool("3. ¿Tiene 4 patas?")
+    # Valores por defecto
+    es_muy_pesado = 0; es_muy_grande = 0; tiene_4_patas = 0; tiene_2_patas = 0
+    tiene_plumas = 0; tiene_pelo = 0; sabe_nadar = 0; sabe_volar = 0
+    pone_huevos = 0; hace_ruido = 0; es_domestico = 0; tiene_pico = 0; es_corral = 0
+    es_carnivoro = 0; tiene_rayas = 0; tiene_trompa = 0; tiene_cuello_largo = 0
+    sabe_trepar = 0; reptil_anfibio = 0; tiene_manchas = 0; vive_en_manada = 0
+    es_roedor = 0; es_carga = 0
+    
+    print("Empecemos... Solo respóndeme con S o N.\n")
+    
+    # BLOQUE 1: TAMAÑO Y PESO
+    es_muy_grande = hacer_pregunta_bool("Cuéntame, ¿es un animal grandote? ¿Mide más de un metro?")
+    es_muy_pesado = hacer_pregunta_bool("¿Dirías que es súper pesado? ¿Pesa más de 100 kilitos?")
+    
+    if es_muy_grande == 1 or es_muy_pesado == 1:
+        es_roedor = 0
+    else:
+        es_roedor = hacer_pregunta_bool("Tengo una corazonada... ¿estamos hablando de un pequeño roedor?")
+        
+    if es_muy_pesado == 1:
+        sabe_volar = 0
+    else:
+        sabe_volar = hacer_pregunta_bool("¿Tiene el hermoso don de volar por los cielos?")
+        
+    # BLOQUE 2: PATAS
+    tiene_4_patas = hacer_pregunta_bool("¿Camina sobre 4 patitas?")
     if tiene_4_patas == 1:
         tiene_2_patas = 0
     else:
-        tiene_2_patas = hacer_pregunta_bool("4. ¿Tiene 2 patas?")
-    tiene_plumas = hacer_pregunta_bool("5. ¿Tiene plumas?")
-    if tiene_plumas == 1:
+        tiene_2_patas = hacer_pregunta_bool("¿Y qué tal sobre 2 patas?")
+        
+    # BLOQUE 3: ANFIBIOS, PLUMAS Y PELO
+    reptil_anfibio = hacer_pregunta_bool("¿Es un reptil o un anfibio? De esos de sangre fría...")
+    if reptil_anfibio == 1:
+        tiene_plumas = 0
         tiene_pelo = 0
     else:
-        tiene_pelo = hacer_pregunta_bool("6. ¿Tiene pelo/pelaje?")
-    sabe_nadar = hacer_pregunta_bool("7. ¿Sabe nadar o vive gran parte del tiempo en el agua?")
-    sabe_volar = hacer_pregunta_bool("8. ¿Sabe volar?")
-    pone_huevos = hacer_pregunta_bool("9. ¿Pone huevos?")
-    hace_ruido = hacer_pregunta_bool("10. ¿Hace ruidos fuertes (como ladridos, graznidos, rugidos, etc)?")
-    es_domestico = hacer_pregunta_bool("11. ¿Es un animal comúnmente doméstico/mascota?")
-    tiene_pico = hacer_pregunta_bool("12. ¿Tiene pico?")
-    es_corral = hacer_pregunta_bool("13. ¿Es un ave comúnmente criada en corrales/granjas?")
+        tiene_plumas = hacer_pregunta_bool("Dime, ¿su cuerpo está cubierto de plumas?")
+        if tiene_plumas == 1:
+            tiene_pelo = 0
+        else:
+            tiene_pelo = hacer_pregunta_bool("Entonces, ¿tiene pelo o un pelaje suavecito?")
+            
+    # BLOQUE 4: HUEVOS, TROMPA, CARGA
+    pone_huevos = hacer_pregunta_bool("Una pregunta clave... ¿este amiguito nace de un huevo?")
+    if pone_huevos == 1:
+        tiene_trompa = 0
+        es_carga = 0
+    else:
+        if reptil_anfibio == 0 and tiene_plumas == 0:
+            tiene_trompa = hacer_pregunta_bool("Mmm... imagínalo bien... ¿acaso tiene una trompa larga?")
+        
+        if es_roedor == 1 or es_muy_grande == 0:
+            es_carga = 0
+        else:
+            es_carga = hacer_pregunta_bool("¿Las personas suelen usarlo para montar o llevar carga pesada?")
+            
+    # BLOQUE 5: PICO Y CORRAL
+    if tiene_plumas == 1:
+        tiene_pico = hacer_pregunta_bool("¿Tiene un pico en lugar de boca?")
+        es_corral = hacer_pregunta_bool("¿Es un ave de esas que verías cacareando en una granja?")
+    else:
+        tiene_pico = hacer_pregunta_bool("Por si acaso... ¿tiene pico?")
+        es_corral = 0
+        
+    # BLOQUE 6: EL RESTO DE PREGUNTAS GENERALES
+    sabe_nadar = hacer_pregunta_bool("¿Le encanta el agua? ¿Sabe nadar o vive gran parte del tiempo ahí?")
+    hace_ruido = hacer_pregunta_bool("¿Suele hacer ruidos fuertes, como rugidos, ladridos o graznidos?")
+    es_domestico = hacer_pregunta_bool("¿Es un animalito de esos que podrías tener como mascota en casa?")
     
-    # Preguntas para mayor inteligencia
-    es_carnivoro = hacer_pregunta_bool("14. ¿Es un animal estrictamente carnívoro o depredador?")
-    tiene_rayas = hacer_pregunta_bool("15. ¿Su cuerpo tiene un patrón de rayas visible (ej: tigre, cebra)?")
-    tiene_trompa = hacer_pregunta_bool("16. ¿Tiene una trompa larga?")
-    tiene_cuello_largo = hacer_pregunta_bool("17. ¿Se caracteriza por tener un cuello inusualmente largo?")
-    sabe_trepar = hacer_pregunta_bool("18. ¿Es conocido por trepar árboles ágilmente?")
-    reptil_anfibio = hacer_pregunta_bool("19. ¿Es un reptil o anfibio?")
-    tiene_manchas = hacer_pregunta_bool("20. ¿Tiene un patrón de manchas distintivas (ej: vaca, jirafa)?")
-    vive_en_manada = hacer_pregunta_bool("21. ¿Suele vivir o cazar en manada/rebaño?")
-    es_roedor = hacer_pregunta_bool("22. ¿Es un roedor?")
-    es_carga = hacer_pregunta_bool("23. ¿Es comúnmente usado como animal de carga o transporte (ej: caballo)?")
+    # Depredadores y presas
+    es_carnivoro = hacer_pregunta_bool("¿Es un cazador nato? ¿Se alimenta estrictamente de carne?")
+    tiene_rayas = hacer_pregunta_bool("Cierra los ojos... ¿tiene un patrón de rayas en su cuerpo?")
+    tiene_cuello_largo = hacer_pregunta_bool("¿Destaca por tener un cuello súper largo y estilizado?")
+    
+    if es_muy_pesado == 0 and tiene_4_patas == 1:
+        sabe_trepar = hacer_pregunta_bool("¿Es un experto trepando árboles ágilmente?")
+        
+    tiene_manchas = hacer_pregunta_bool("Mmm... ¿tiene manchas bonitas por todo su cuerpo?")
+    vive_en_manada = hacer_pregunta_bool("¿Le gusta estar acompañado? ¿Vive o caza en manada?")
 
-    print("\nAnalizando tus respuestas...")
-    time.sleep(1.5)
+    mensaje_espera()
+    print("🔮 Leyendo tu mente y consultando mi bola de cristal... 🔮\n")
+    time.sleep(2)
     
     columnas = [
         'es_muy_pesado', 'es_muy_grande', 'tiene_4_patas', 'tiene_2_patas',
@@ -89,14 +150,14 @@ def main():
     df_prediccion = pd.DataFrame(datos_usuario, columns=columnas)
     prediccion = modelo.predict(df_prediccion)[0]
     
-    print("=======================================")
-    print(f" ¡EL ÁRBOL DICE QUE ESTÁS PENSANDO EN UN... {prediccion.upper()}! ")
-    print("=======================================\n")
+    print("==================================================")
+    print(f" ✨ ¡LO TENGO! ESTÁS PENSANDO EN UN(A)... ¡{prediccion.upper()}! ✨ ")
+    print("==================================================\n")
     
     # --- SISTEMA DE FEEDBACK Y CUARENTENA ---
-    acierto = hacer_pregunta_bool("¿Adiviné correctamente?")
+    acierto = hacer_pregunta_bool("Dime la verdad, ¿adiviné correctamente?")
     if acierto == 0:
-        animal_real = input("¡Vaya! ¿En qué animal estabas pensando? (Escribe el nombre): ").strip().capitalize()
+        animal_real = input("  ¡Vaya! Me has derrotado. ¿En qué animal estabas pensando?: ").strip().capitalize()
         
         fila_cuarentena = datos_usuario[0] + [animal_real]
         columnas_csv = columnas + ['etiqueta']
@@ -109,14 +170,14 @@ def main():
         else:
             df_nuevo.to_csv(ruta_candidatos, mode='a', header=False, index=False)
             
-        print(f"\n¡Gracias! He anotado que esas características corresponden a un '{animal_real}'.")
-        print("He enviado este registro a la CUARENTENA de datos.")
-        print("Si muchos usuarios reportan lo mismo, aprenderé a predecirlo en el futuro.")
+        print(f"\n🌟 ¡Qué increíble! Acabo de aprender que esas respuestas corresponden a un(a) '{animal_real}'.")
+        print("  Lo guardaré en mis pergaminos de estudio (cuarentena).")
+        print("  Si más personas piensan como tú, ¡aprenderé a adivinarlo en el futuro!")
     else:
-        print("\n¡Genial! Soy invencible gracias a mis datos puramente booleanos.")
+        print("\n😎 ¡Jaja! Mi inteligencia artificial y yo somos invencibles.")
 
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("\n¡Juego cancelado! Hasta la próxima.")
+        print("\n\n👋 ¡Oh! Te tienes que ir. ¡Nos vemos en la próxima partida!")
