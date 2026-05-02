@@ -16,15 +16,6 @@ def hacer_pregunta_bool(pregunta):
         else:
             print("Por favor responde con 's' o 'n'.")
 
-def hacer_pregunta_num(pregunta, tipo=float):
-    while True:
-        respuesta = input(f"{pregunta}: ").strip()
-        try:
-            valor = tipo(respuesta)
-            return valor
-        except ValueError:
-            print(f"Por favor ingresa un número válido.")
-
 def main():
     limpiar_consola()
     print("=======================================")
@@ -41,47 +32,54 @@ def main():
         
     modelo = joblib.load(ruta_modelo)
     
-    print("Responde las siguientes preguntas sobre tu animal:\n")
-    peso_kg = hacer_pregunta_num("1. ¿Cuál es su peso aproximado en KG? (ej: 4.5, 0.2, 15)")
-    altura_cm = hacer_pregunta_num("2. ¿Cuál es su altura/longitud aproximada en CM? (ej: 25, 45, 10)")
-    numero_patas = hacer_pregunta_num("3. ¿Cuántas patas tiene?", tipo=int)
-    tiene_plumas = hacer_pregunta_bool("4. ¿Tiene plumas?")
-    tiene_pelo = hacer_pregunta_bool("5. ¿Tiene pelo/pelaje?")
-    sabe_nadar = hacer_pregunta_bool("6. ¿Sabe nadar o vive gran parte del tiempo en el agua?")
-    sabe_volar = hacer_pregunta_bool("7. ¿Sabe volar?")
-    pone_huevos = hacer_pregunta_bool("8. ¿Pone huevos?")
-    hace_ruido = hacer_pregunta_bool("9. ¿Hace ruidos fuertes (como ladridos, graznidos, rugidos, etc)?")
-    es_domestico = hacer_pregunta_bool("10. ¿Es un animal comúnmente doméstico/mascota?")
-    tiene_pico = hacer_pregunta_bool("11. ¿Tiene pico?")
-    es_corral = hacer_pregunta_bool("12. ¿Es un ave comúnmente criada en corrales/granjas?")
+    print("Responde las siguientes preguntas sobre tu animal (Solo S/N):\n")
+    es_muy_pesado = hacer_pregunta_bool("1. ¿Es un animal muy pesado (más de 100 KG en su edad adulta)?")
+    es_muy_grande = hacer_pregunta_bool("2. ¿Es un animal muy grande o largo (mide más de 1 metro)?")
+    tiene_4_patas = hacer_pregunta_bool("3. ¿Tiene 4 patas?")
+    if tiene_4_patas == 1:
+        tiene_2_patas = 0
+    else:
+        tiene_2_patas = hacer_pregunta_bool("4. ¿Tiene 2 patas?")
+    tiene_plumas = hacer_pregunta_bool("5. ¿Tiene plumas?")
+    if tiene_plumas == 1:
+        tiene_pelo = 0
+    else:
+        tiene_pelo = hacer_pregunta_bool("6. ¿Tiene pelo/pelaje?")
+    sabe_nadar = hacer_pregunta_bool("7. ¿Sabe nadar o vive gran parte del tiempo en el agua?")
+    sabe_volar = hacer_pregunta_bool("8. ¿Sabe volar?")
+    pone_huevos = hacer_pregunta_bool("9. ¿Pone huevos?")
+    hace_ruido = hacer_pregunta_bool("10. ¿Hace ruidos fuertes (como ladridos, graznidos, rugidos, etc)?")
+    es_domestico = hacer_pregunta_bool("11. ¿Es un animal comúnmente doméstico/mascota?")
+    tiene_pico = hacer_pregunta_bool("12. ¿Tiene pico?")
+    es_corral = hacer_pregunta_bool("13. ¿Es un ave comúnmente criada en corrales/granjas?")
     
-    # Nuevas preguntas para mayor inteligencia
-    es_carnivoro = hacer_pregunta_bool("13. ¿Es un animal estrictamente carnívoro o depredador?")
-    tiene_rayas = hacer_pregunta_bool("14. ¿Su cuerpo tiene un patrón de rayas visible (ej: tigre, cebra)?")
-    tiene_trompa = hacer_pregunta_bool("15. ¿Tiene una trompa larga?")
-    tiene_cuello_largo = hacer_pregunta_bool("16. ¿Se caracteriza por tener un cuello inusualmente largo?")
-    sabe_trepar = hacer_pregunta_bool("17. ¿Es conocido por trepar árboles ágilmente?")
-    reptil_anfibio = hacer_pregunta_bool("18. ¿Es un reptil o anfibio?")
-    tiene_manchas = hacer_pregunta_bool("19. ¿Tiene un patrón de manchas distintivas (ej: vaca, jirafa)?")
-    vive_en_manada = hacer_pregunta_bool("20. ¿Suele vivir o cazar en manada/rebaño?")
-    es_roedor = hacer_pregunta_bool("21. ¿Es un roedor?")
-    es_carga = hacer_pregunta_bool("22. ¿Es comúnmente usado como animal de carga o transporte (ej: caballo)?")
+    # Preguntas para mayor inteligencia
+    es_carnivoro = hacer_pregunta_bool("14. ¿Es un animal estrictamente carnívoro o depredador?")
+    tiene_rayas = hacer_pregunta_bool("15. ¿Su cuerpo tiene un patrón de rayas visible (ej: tigre, cebra)?")
+    tiene_trompa = hacer_pregunta_bool("16. ¿Tiene una trompa larga?")
+    tiene_cuello_largo = hacer_pregunta_bool("17. ¿Se caracteriza por tener un cuello inusualmente largo?")
+    sabe_trepar = hacer_pregunta_bool("18. ¿Es conocido por trepar árboles ágilmente?")
+    reptil_anfibio = hacer_pregunta_bool("19. ¿Es un reptil o anfibio?")
+    tiene_manchas = hacer_pregunta_bool("20. ¿Tiene un patrón de manchas distintivas (ej: vaca, jirafa)?")
+    vive_en_manada = hacer_pregunta_bool("21. ¿Suele vivir o cazar en manada/rebaño?")
+    es_roedor = hacer_pregunta_bool("22. ¿Es un roedor?")
+    es_carga = hacer_pregunta_bool("23. ¿Es comúnmente usado como animal de carga o transporte (ej: caballo)?")
 
-    print("\nAnalizando tus 22 respuestas...")
+    print("\nAnalizando tus respuestas...")
     time.sleep(1.5)
     
     columnas = [
-        'peso_kg', 'altura_cm', 'numero_patas', 'tiene_plumas', 'tiene_pelo', 
-        'sabe_nadar', 'sabe_volar', 'pone_huevos', 'hace_ruido_fuerte', 
-        'es_domestico', 'tiene_pico', 'es_ave_de_corral',
-        'es_carnivoro', 'tiene_rayas', 'tiene_trompa', 'tiene_cuello_largo',
-        'sabe_trepar_arboles', 'es_reptil_o_anfibio', 'tiene_manchas',
+        'es_muy_pesado', 'es_muy_grande', 'tiene_4_patas', 'tiene_2_patas',
+        'tiene_plumas', 'tiene_pelo', 'sabe_nadar', 'sabe_volar', 'pone_huevos', 
+        'hace_ruido_fuerte', 'es_domestico', 'tiene_pico', 'es_ave_de_corral', 
+        'es_carnivoro', 'tiene_rayas', 'tiene_trompa', 'tiene_cuello_largo', 
+        'sabe_trepar_arboles', 'es_reptil_o_anfibio', 'tiene_manchas', 
         'vive_en_manada', 'es_roedor', 'es_animal_de_carga'
     ]
     
     datos_usuario = [[
-        peso_kg, altura_cm, numero_patas, tiene_plumas, tiene_pelo, 
-        sabe_nadar, sabe_volar, pone_huevos, hace_ruido, 
+        es_muy_pesado, es_muy_grande, tiene_4_patas, tiene_2_patas,
+        tiene_plumas, tiene_pelo, sabe_nadar, sabe_volar, pone_huevos, hace_ruido, 
         es_domestico, tiene_pico, es_corral,
         es_carnivoro, tiene_rayas, tiene_trompa, tiene_cuello_largo,
         sabe_trepar, reptil_anfibio, tiene_manchas,
@@ -115,7 +113,7 @@ def main():
         print("He enviado este registro a la CUARENTENA de datos.")
         print("Si muchos usuarios reportan lo mismo, aprenderé a predecirlo en el futuro.")
     else:
-        print("\n¡Genial! Soy invencible gracias a mis 22 características.")
+        print("\n¡Genial! Soy invencible gracias a mis datos puramente booleanos.")
 
 if __name__ == "__main__":
     try:
