@@ -7,16 +7,10 @@ import os
 import matplotlib.pyplot as plt
 
 def main():
-    print("Comprobando modelo...")
+    print("Entrenando modelo masivo...")
     # Asegurarnos de que el directorio de modelos existe
     os.makedirs('models', exist_ok=True)
     
-    ruta_modelo = 'models/arbol_animales.joblib'
-    if os.path.exists(ruta_modelo):
-        print(f"✔️  El modelo ya está entrenado y guardado en '{ruta_modelo}'. Saltando entrenamiento.")
-        print("   (Si deseas re-entrenarlo, elimina el archivo y vuelve a ejecutar este script).")
-        return
-        
     # 1. Cargar los datos
     ruta_csv = 'data/dataset_animales.csv'
     if not os.path.exists(ruta_csv):
@@ -46,6 +40,7 @@ def main():
     print(f"Precisión del modelo en el set de prueba: {precision * 100:.2f}%")
     
     # 6. Guardar el modelo entrenado
+    ruta_modelo = 'models/arbol_animales.joblib'
     joblib.dump(modelo, ruta_modelo)
     print(f"Modelo guardado exitosamente en: {ruta_modelo}")
     

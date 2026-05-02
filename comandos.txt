@@ -26,7 +26,9 @@ python src\train.py
 python src\juego.py
 
 -----------------------------------------------------------
-=== (OPCIONAL) EJECUCIÓN AUTOMÁTICA EN UN CLIC ===
-Si no quieres escribir comandos a mano, en Windows puedes simplemente ejecutar el archivo:
+=== PASO 4: VALIDAR CUARENTENA ===
+(Revisa si hay animales nuevos propuestos por los usuarios que hayan superado el umbral de 100 reportes, los aprueba y re-entrena el modelo)
 
-.\run.bat
+python src\validador.py
+
+-----------------------------------------------------------
