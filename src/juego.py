@@ -51,14 +51,31 @@ def main():
     es_carnivoro = 0; tiene_rayas = 0; tiene_trompa = 0; tiene_cuello_largo = 0
     sabe_trepar = 0; reptil_anfibio = 0; tiene_manchas = 0; vive_en_manada = 0
     es_roedor = 0; es_carga = 0
+    tiene_caparazon = 0; tiene_aletas = 0; es_insecto_crustaceo = 0; es_comestible = 0
     
     print("Empecemos... Solo respóndeme con S o N.\n")
     
-    # BLOQUE 1: TAMAÑO Y PESO
-    es_muy_grande = hacer_pregunta_bool("Cuéntame, ¿es un animal grandote? ¿Mide más de un metro?")
-    es_muy_pesado = hacer_pregunta_bool("¿Dirías que es súper pesado? ¿Pesa más de 100 kilitos?")
+    # BLOQUE 0: BICHOS Y ACUÁTICOS (Para descartar rápido)
+    es_insecto_crustaceo = hacer_pregunta_bool("¿Es un bicho? (Insecto, arácnido o crustáceo)")
+    if es_insecto_crustaceo == 1:
+        es_muy_grande = 0
+        es_muy_pesado = 0
+        tiene_pelo = 0
+        tiene_plumas = 0
+        tiene_caparazon = hacer_pregunta_bool("¿Tiene un caparazón o exoesqueleto duro (como una armadura)?")
+    else:
+        tiene_caparazon = hacer_pregunta_bool("¿Tiene caparazón?")
+        
+    sabe_nadar = hacer_pregunta_bool("¿Le encanta el agua? ¿Sabe nadar o vive gran parte del tiempo ahí?")
+    if sabe_nadar == 1:
+        tiene_aletas = hacer_pregunta_bool("¿Tiene aletas para nadar?")
     
-    if es_muy_grande == 1 or es_muy_pesado == 1:
+    # BLOQUE 1: TAMAÑO Y PESO (Si no es bicho)
+    if es_insecto_crustaceo == 0:
+        es_muy_grande = hacer_pregunta_bool("Cuéntame, ¿es un animal grandote? ¿Mide más de un metro?")
+        es_muy_pesado = hacer_pregunta_bool("¿Dirías que es súper pesado? ¿Pesa más de 100 kilitos?")
+    
+    if es_muy_grande == 1 or es_muy_pesado == 1 or es_insecto_crustaceo == 1:
         es_roedor = 0
     else:
         es_roedor = hacer_pregunta_bool("Tengo una corazonada... ¿estamos hablando de un pequeño roedor?")
@@ -68,16 +85,22 @@ def main():
     else:
         sabe_volar = hacer_pregunta_bool("¿Tiene el hermoso don de volar por los cielos?")
         
-    # BLOQUE 2: PATAS
-    tiene_4_patas = hacer_pregunta_bool("¿Camina sobre 4 patitas?")
-    if tiene_4_patas == 1:
+    # BLOQUE 2: PATAS (Si no tiene aletas)
+    if tiene_aletas == 1:
+        tiene_4_patas = 0
         tiene_2_patas = 0
     else:
-        tiene_2_patas = hacer_pregunta_bool("¿Y qué tal sobre 2 patas?")
+        tiene_4_patas = hacer_pregunta_bool("¿Camina sobre 4 patitas?")
+        if tiene_4_patas == 1:
+            tiene_2_patas = 0
+        else:
+            tiene_2_patas = hacer_pregunta_bool("¿Y qué tal sobre 2 patas?")
         
     # BLOQUE 3: ANFIBIOS, PLUMAS Y PELO
-    reptil_anfibio = hacer_pregunta_bool("¿Es un reptil o un anfibio? De esos de sangre fría...")
-    if reptil_anfibio == 1:
+    if es_insecto_crustaceo == 0:
+        reptil_anfibio = hacer_pregunta_bool("¿Es un reptil o un anfibio? De esos de sangre fría...")
+        
+    if reptil_anfibio == 1 or tiene_caparazon == 1 or es_insecto_crustaceo == 1:
         tiene_plumas = 0
         tiene_pelo = 0
     else:
@@ -89,11 +112,11 @@ def main():
             
     # BLOQUE 4: HUEVOS, TROMPA, CARGA
     pone_huevos = hacer_pregunta_bool("Una pregunta clave... ¿este amiguito nace de un huevo?")
-    if pone_huevos == 1:
+    if pone_huevos == 1 or es_insecto_crustaceo == 1:
         tiene_trompa = 0
         es_carga = 0
     else:
-        if reptil_anfibio == 0 and tiene_plumas == 0:
+        if reptil_anfibio == 0 and tiene_plumas == 0 and tiene_aletas == 0:
             tiene_trompa = hacer_pregunta_bool("Mmm... imagínalo bien... ¿acaso tiene una trompa larga?")
         
         if es_roedor == 1 or es_muy_grande == 0:
@@ -105,24 +128,26 @@ def main():
     if tiene_plumas == 1:
         tiene_pico = hacer_pregunta_bool("¿Tiene un pico en lugar de boca?")
         es_corral = hacer_pregunta_bool("¿Es un ave de esas que verías cacareando en una granja?")
-    else:
+    elif es_insecto_crustaceo == 0:
         tiene_pico = hacer_pregunta_bool("Por si acaso... ¿tiene pico?")
         es_corral = 0
         
     # BLOQUE 6: EL RESTO DE PREGUNTAS GENERALES
-    sabe_nadar = hacer_pregunta_bool("¿Le encanta el agua? ¿Sabe nadar o vive gran parte del tiempo ahí?")
+    es_comestible = hacer_pregunta_bool("¿Es criado comúnmente para consumo humano en algunos países?")
+    
     hace_ruido = hacer_pregunta_bool("¿Suele hacer ruidos fuertes, como rugidos, ladridos o graznidos?")
     es_domestico = hacer_pregunta_bool("¿Es un animalito de esos que podrías tener como mascota en casa?")
     
-    # Depredadores y presas
-    es_carnivoro = hacer_pregunta_bool("¿Es un cazador nato? ¿Se alimenta estrictamente de carne?")
-    tiene_rayas = hacer_pregunta_bool("Cierra los ojos... ¿tiene un patrón de rayas en su cuerpo?")
-    tiene_cuello_largo = hacer_pregunta_bool("¿Destaca por tener un cuello súper largo y estilizado?")
+    es_carnivoro = hacer_pregunta_bool("¿Es un cazador nato? ¿Se alimenta estrictamente de carne o caza a sus presas?")
+    
+    if tiene_aletas == 0 and es_insecto_crustaceo == 0:
+        tiene_rayas = hacer_pregunta_bool("Cierra los ojos... ¿tiene un patrón de rayas en su cuerpo?")
+        tiene_cuello_largo = hacer_pregunta_bool("¿Destaca por tener un cuello súper largo y estilizado?")
+        tiene_manchas = hacer_pregunta_bool("Mmm... ¿tiene manchas bonitas por todo su cuerpo?")
     
     if es_muy_pesado == 0 and tiene_4_patas == 1:
         sabe_trepar = hacer_pregunta_bool("¿Es un experto trepando árboles ágilmente?")
         
-    tiene_manchas = hacer_pregunta_bool("Mmm... ¿tiene manchas bonitas por todo su cuerpo?")
     vive_en_manada = hacer_pregunta_bool("¿Le gusta estar acompañado? ¿Vive o caza en manada?")
 
     mensaje_espera()
@@ -135,7 +160,8 @@ def main():
         'hace_ruido_fuerte', 'es_domestico', 'tiene_pico', 'es_ave_de_corral', 
         'es_carnivoro', 'tiene_rayas', 'tiene_trompa', 'tiene_cuello_largo', 
         'sabe_trepar_arboles', 'es_reptil_o_anfibio', 'tiene_manchas', 
-        'vive_en_manada', 'es_roedor', 'es_animal_de_carga'
+        'vive_en_manada', 'es_roedor', 'es_animal_de_carga',
+        'tiene_caparazon_o_exosqueleto', 'tiene_aletas', 'es_insecto_o_crustaceo', 'es_comestible'
     ]
     
     datos_usuario = [[
@@ -144,7 +170,8 @@ def main():
         es_domestico, tiene_pico, es_corral,
         es_carnivoro, tiene_rayas, tiene_trompa, tiene_cuello_largo,
         sabe_trepar, reptil_anfibio, tiene_manchas,
-        vive_en_manada, es_roedor, es_carga
+        vive_en_manada, es_roedor, es_carga,
+        tiene_caparazon, tiene_aletas, es_insecto_crustaceo, es_comestible
     ]]
     
     df_prediccion = pd.DataFrame(datos_usuario, columns=columnas)
