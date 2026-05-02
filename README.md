@@ -1,8 +1,14 @@
-# Árbol de Decisión: Adivinador de Animales 🌳🔮
+# El Gran Sabio de los Animales 🌳🔮
 
-Este es un proyecto educativo de Machine Learning que utiliza un **Árbol de Decisión** para predecir un animal (Perro, Gato, Paloma, Hamster, Cuy, Pato, Pollo, Pavo, Ganso) en base a sus características físicas.
+Este es un proyecto educativo de Machine Learning que utiliza un **Árbol de Decisión (DecisionTreeClassifier)** para adivinar en qué animal estás pensando en base a un interrogatorio dinámico e inteligente estilo "Akinator".
 
-Está compuesto por un dataset sintético rico en variaciones para que el modelo no solo memorice, sino que aprenda a generalizar, y cuenta con un script interactivo en la terminal estilo "Akinator" para poner a prueba el árbol entrenado.
+El modelo es capaz de predecir entre **34 animales diferentes** (mamíferos, reptiles, aves, crustáceos e insectos) cruzando 27 características booleanas (Sí/No).
+
+## Características Destacadas
+- **Inteligencia Deductiva**: El juego no te hace las 27 preguntas de corrido. Posee un motor de lógica interno (`if/else` inteligentes) que autocompleta respuestas obvias. (Ej: Si le dices que es un *bicho*, deduce automáticamente que no tiene *pelo*, no mide *1 metro*, ni pesa *100 kg*).
+- **Dataset Masivo**: Genera un dataset de más de **10,200 registros** aplicando un 2% de "ruido" (mutaciones aleatorias) en el entrenamiento para que el modelo no solo memorice, sino que generalice.
+- **Lógica 100% Booleana**: Adiós a los números ambiguos. El jugador solo debe responder con `s` (Sí) o `n` (No).
+- **Sistema de Cuarentena (Aprendizaje)**: Si el modelo se equivoca o le ganas, guarda tus respuestas y el animal en un archivo `datos_candidatos.csv` para que los desarrolladores puedan revisar los "fallos" e inyectar ese conocimiento en un futuro reentrenamiento.
 
 ## Requisitos
 - Python 3.11.x (Recomendado gestionarlo con `pyenv`).
@@ -35,28 +41,34 @@ Está compuesto por un dataset sintético rico en variaciones para que el modelo
 
 El proyecto se divide en 3 scripts principales ubicados en la carpeta `src/`. Deben ejecutarse en orden:
 
-### 1. Generar los datos
-Genera un archivo CSV en la carpeta `data/` con miles de ejemplos de animales aplicando ligeras variaciones (mutaciones) en su peso, altura y características para dar realismo al dataset.
+### 1. Generar la Base de Conocimiento
+Genera el dataset booleano en la carpeta `data/` cruzando a los 34 animales con sus 27 características y aplicando el margen de error probabilístico.
 ```bash
 python src/generate_data.py
 ```
 
-### 2. Entrenar el Modelo
-Lee el CSV generado, entrena un clasificador `DecisionTreeClassifier` usando el 80% de los datos y guarda el modelo inteligente en la carpeta `models/`. Imprime la precisión y algunas de las reglas aprendidas por el árbol.
+### 2. Entrenar a la Bestia Matemática
+Lee el CSV de 10,200 registros, entrena el Árbol de Decisión usando el 80% de los datos y exporta el "cerebro" (`.joblib`) a la carpeta `models/`.
 ```bash
 python src/train.py
 ```
 
-### 3. ¡Jugar!
-Inicia el script interactivo que te hará preguntas sobre el animal en el que estás pensando. Responderás con `s/n` o números, y al final, el modelo de Machine Learning intentará adivinar de qué animal se trata.
+### 3. ¡Desafiar al Sabio! (Jugar)
+Inicia la consola interactiva donde el sistema leerá tu mente haciéndote preguntas amigables.
 ```bash
 python src/juego.py
 ```
 
+### 4. (Opcional) Sistema de Cuarentena
+Si los usuarios reportaron fallos o animales no adivinados (los cuales se guardan en `data/datos_candidatos.csv`), puedes usar el validador para auditar esa nueva data antes de integrarla oficialmente al generador principal.
+```bash
+python src/validador.py
+```
+
 ## Estructura de Carpetas
-- `/data`: Contiene los datasets generados.
-- `/models`: Contiene el modelo de Machine Learning exportado (`.joblib`).
-- `/src`: Contiene los scripts fuente.
+- `/data`: Datasets generados y archivos de cuarentena.
+- `/models`: El cerebro entrenado (`.joblib`).
+- `/src`: Scripts fuente (Generador, Entrenador, Juego, Validador).
 
 ---
-*Desarrollado para fines de aprendizaje de estructuras lógicas de Árboles de Decisión.*
+*Desarrollado para explorar el poder de la Lógica Booleana y los Árboles de Decisión de Scikit-Learn de manera lúdica.*
